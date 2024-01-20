@@ -4,17 +4,24 @@ import wget
 import os
 import mediapipe as mp
 import time
+from decouple import config
+from mediapipe.framework.formats import landmark_pb2
 
-def detect_human():
-    """takes an image and detect pose"""
+def detect_human(frame, poses=None, calculate_accuracy=False):
+    """
+    takes an image and detect pose
+    this function will be called once user selects the type of their group.
+    """
     # use a pre-trained YOLOv3 or YOLOv4 model, for example.
     url = "https://pjreddie.com/media/files/yolov3.weights"
-    weights_file = "yolov3.weights"
+    weights_file = config('WEIGHTS_FILE')
+    yolo_config = config('YOLO_CONFIG')
     if not os.path.isfile(weights_file):
         wget.download(url)
     #Load the YOLO model using OpenCV:
-    net = cv2.dnn.readNet(weights_file, "darknet/cfg/yolov3.cfg")
-    frame = cv2.imread("multiple_people_pic.jpeg")
+    net = cv2.dnn.readNet(weights_file, yolo_config)
+    
+    frame = cv2.flip(frame, 1)
     height, width, _ = frame.shape
     blob = cv2.dnn.blobFromImage(frame, 1/255.0, (416, 416), swapRB=True, crop=False)
     net.setInput(blob)
@@ -37,7 +44,7 @@ def detect_human():
                 y = int(center_y - h / 2)
                 person_boxes.append([x, y, w, h])  # Note: NMSBoxes expects [x, y, w, h] format
                 confidences.append(float(confidence))
-            # use non-maximum suppression (NMS) to eliminate overlapping bounding boxes
+            # SOLUTION: use non-maximum suppression (NMS) to eliminate overlapping bounding boxes
             indices = cv2.dnn.NMSBoxes(person_boxes, confidences, 0.5, 0.4)
     cropped_frames = []
     for i in range(len(person_boxes)):
@@ -57,11 +64,12 @@ def detect_human():
             frame_copy[:, x+w:] = 0
             cropped_frames.append(frame_copy)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 0), 2)
-            cv2.imshow("YOLOv3", frame)
-            cv2.waitKey(0)
+            #cv2.imshow("YOLOv3", frame)
+            #cv2.waitKey(0)
 
     # MEDIAPIPE BEGINS HERE
-    for person_frame in cropped_frames:
+    for i in range(len(cropped_frames)):
+        person_frame = cropped_frames[i]
         if person_frame is not None and person_frame.size > 0:
             mp_drawing = mp.solutions.drawing_utils
             mp_holistic = mp.solutions.holistic
@@ -81,7 +89,44 @@ def detect_human():
                 image.flags.writeable = True
                 # Recolor image back to BGR for rendering
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-                cv2.imshow("YOLOv3", frame)
-                cv2.waitKey(0)
+
+    # ON AND OFF: this is for suggesting a pose
+    for pose in poses:
+        mp_drawing = mp.solutions.drawing_utils
+        mp_holistic = mp.solutions.holistic
+        if pose["face_landmarks"] is not None:
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["face_landmarks"]), mp_holistic.FACEMESH_CONTOURS)
+        if pose["right_hand_landmarks"] is not None:
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["right_hand_landmarks"]), mp_holistic.HAND_CONNECTIONS)
+        if pose["left_hand_landmarks"] is not None:
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["left_hand_landmarks"]), mp_holistic.HAND_CONNECTIONS)
+        if pose["pose_landmarks"] is not None:
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["pose_landmarks"]), mp_holistic.POSE_CONNECTIONS)
+    #cv2.imshow("ProPoser", frame)
+    return frame
+
+# Helper functions for storing and loading poses
+def convert_dict_to_landmarks(landmarks_dict):
+    landmarks = landmark_pb2.NormalizedLandmarkList()
+    for landmark_dict in landmarks_dict:
+        landmark = landmarks.landmark.add()
+        landmark.x = landmark_dict['x']
+        landmark.y = landmark_dict['y']
+        landmark.z = landmark_dict['z']
+    return landmarks
+
+def convert_landmarks_to_dict(landmarks):
+    if landmarks is None:
+        return None
+    return [{'x': landmark.x, 'y': landmark.y, 'z': landmark.z} for landmark in landmarks.landmark]
+
+def convert_results_to_dict(results):
+    return {
+        'face_landmarks': convert_landmarks_to_dict(results.face_landmarks),
+        'pose_landmarks': convert_landmarks_to_dict(results.pose_landmarks),
+        'left_hand_landmarks': convert_landmarks_to_dict(results.left_hand_landmarks),
+        'right_hand_landmarks': convert_landmarks_to_dict(results.right_hand_landmarks),
+    }
+
 if __name__ == "__main__":
     detect_human()
