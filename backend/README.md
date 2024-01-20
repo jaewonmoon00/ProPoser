@@ -1,6 +1,6 @@
 # ProPoser
 
-"A web app that recommends suitable selfie poses based on the type of group (partner, family, friends, etc.) and assigns a score based on synchronization level."
+"recommends suitable selfie poses based on the party size (type of group such as individual, couple, family, friends, club, etc.) and assigns an accuracy score based on synchronization level."
 
 name of json files should end with the number of people in the pose.
 ex) pose_name_4, pose_name_2, ...
