@@ -83,6 +83,8 @@ def gen(camera, num_people=1):
                 b"--frame\r\n"
                 b"Content-Type: image/jpeg\r\n\r\n" + jpeg.tobytes() + b"\r\n\r\n"
             )
+    # close the camera
+    camera.stop()
 
 @api_view(["POST", "GET"])
 def stream_video(request):

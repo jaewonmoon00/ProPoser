@@ -8,3 +8,7 @@ __pycache__/
 *$py.class
 
 db.sqlite3
+
+poses/snapshot*.jpg
+
+conuhacksviii-346820276f09.json
