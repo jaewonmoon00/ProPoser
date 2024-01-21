@@ -1,22 +1,16 @@
+import Image from "next/image";
 interface PropLogo {
   className?: string;
 }
 
 export function ProposerLogo(props: PropLogo) {
   return (
-    <svg
+    <Image
       {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-    </svg>
+      src="proposer-logo.svg"
+      width={42}
+      height={50}
+      alt="proposer-logo"
+    />
   );
 }
