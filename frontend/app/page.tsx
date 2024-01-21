@@ -2,6 +2,8 @@
 import React from "react";
 import { useRouter, redirect } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import backgroundImage from './backimg.png'
+import Image from 'next/image';
 
 export default function Home() {
   const router = useRouter();
@@ -19,9 +21,19 @@ export default function Home() {
     // Navigate to /main
     router.push(`/main?partySize=${partySize}`);
   };
-
+  
   return (
+
     <main className="flex flex-col items-center justify-center flex-grow space-y-4 px-6 pb-8">
+      <div className="my-container" style={{ position: 'relative', height: '250px'}}>
+      <Image
+        src={backgroundImage}
+        alt="Background Image"
+        layout="responsive"  // Use "responsive" layout
+        objectFit="cover"
+        sizes="(max-width: 15000px) 1100vw, 5000px"  // Adjust the sizes according to your needs
+      />
+      </div>
       <button
         type="submit"
         name="party_num"
