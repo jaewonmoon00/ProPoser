@@ -45,8 +45,9 @@ INSTALLED_APPS = [
 ]
 
 # Configure Django to use Google Cloud Storage
-# DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = "conuhacksviii-bucket"
+GOOGLE_APPLICATION_CREDENTIALS=config('GOOGLE_APPLICATION_CREDENTIALS')
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

@@ -10,6 +10,5 @@ class Pose(models.Model):
     accuracy_score = models.IntegerField(
         default=0, validators=[MaxValueValidator(100), MinValueValidator(0)]
     )
-
     class Meta:
         ordering = ["-accuracy_score", "created_at"]

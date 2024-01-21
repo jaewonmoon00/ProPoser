@@ -23,6 +23,7 @@ def detect_human(frame, poses=None, calculate_accuracy=False):
     yolo_config = config('YOLO_CONFIG')
     if not os.path.isfile(weights_file):
         wget.download(url)
+    print(weights_file, yolo_config)
     #Load the YOLO model using OpenCV:
     net = cv2.dnn.readNet(weights_file, yolo_config)
     
