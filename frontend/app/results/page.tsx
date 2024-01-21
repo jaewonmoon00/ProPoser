@@ -27,42 +27,42 @@ export default function Component() {
               alt="Selfie 1"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 2"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 3"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
           </div>
@@ -71,42 +71,42 @@ export default function Component() {
               alt="Selfie 4"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 5"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 6"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
           </div>
@@ -115,42 +115,42 @@ export default function Component() {
               alt="Selfie 7"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 8"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 9"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
           </div>
@@ -159,42 +159,42 @@ export default function Component() {
               alt="Selfie 10"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width={200}
             />
             <Image
               alt="Selfie 11"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width={200}
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
             <Image
               alt="Selfie 12"
               className="aspect-content object-cover"
               height={150}
-              src="/placeholder-img.png"
+              src="/images/placeholder-img.png"
               width="200"
             />
           </div>
