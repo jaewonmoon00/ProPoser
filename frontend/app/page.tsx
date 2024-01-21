@@ -25,7 +25,7 @@ export default function Home() {
   return (
 
     <main className="flex flex-col items-center justify-center flex-grow space-y-4 px-6 pb-8">
-      <div className="my-container animate-pulse " style={{ position: 'relative', height: '250px'}}>
+      <div className="my-container " style={{ position: 'relative', height: '250px'}}>
       <Image
         className="pointer-events-none"
         src={backgroundImage}
