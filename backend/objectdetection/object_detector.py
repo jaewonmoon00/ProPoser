@@ -3,12 +3,16 @@ import numpy as np
 import wget
 import os
 import mediapipe as mp
-import time
-from decouple import config
+import json
 from mediapipe.framework.formats import landmark_pb2
+from decouple import config
+import random
 
+# TODO: error 값 구하기
+# type_to_number = {"individual": 1, "couple": 2, "family": 4, "friends": 4}
 pose_files = os.listdir('poses')
-def detect_human(frame, poses=None):
+
+def detect_human(frame, poses=None, calculate_accuracy=False):
     """
     takes an image and detect pose
     this function will be called once user selects the type of their group.
@@ -69,6 +73,7 @@ def detect_human(frame, poses=None):
             #cv2.waitKey(0)
 
     # MEDIAPIPE BEGINS HERE
+    total_accuracy_score = 0
     for i in range(len(cropped_frames)):
         person_frame = cropped_frames[i]
         if person_frame is not None and person_frame.size > 0:
@@ -87,10 +92,37 @@ def detect_human(frame, poses=None):
                     mp_drawing.draw_landmarks(frame, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
                     mp_drawing.draw_landmarks(frame, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
                     mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS)
+                    if calculate_accuracy:
+                        results_dict = convert_results_to_dict(results)
+                        # Calculate landmark difference and pose accuracy score for each part
+                        total_accuracy_score_for_person = 0
+                        number_of_parts = 0
+                        for part in ['face_landmarks', 'pose_landmarks', 'left_hand_landmarks', 'right_hand_landmarks']:
+                            # edge case: when there is unnecessary landmarks, we ignore it for now (we can give a penalty too)
+                            if poses[i][part] is not None:
+                                number_of_parts += 1
+                                if results_dict[part] is None:
+                                    # give a penalty
+                                    continue
+                                else:
+                                    landmarks1 = results_dict[part]
+                                    landmarks2 = poses[i][part]
+                                    total_accuracy_score_for_person += calculate_pose_accuracy_score(landmarks1, landmarks2)
+                        avg_accuracy_score_for_person = total_accuracy_score_for_person / number_of_parts
+                        total_accuracy_score += avg_accuracy_score_for_person
+                        print(i,"th person's accuracy score:", avg_accuracy_score_for_person)
+                        #TODO: display the score & test with multiple people & get the avg of multiple people
+                        #cv2.putText(frame, accuracy_score, (center_x, center_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 215, 255), 5, cv2.LINE_AA)
                 image.flags.writeable = True
                 # Recolor image back to BGR for rendering
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
+    if calculate_accuracy:
+        try:
+            avg_accuracy_score = int(round(total_accuracy_score / len(cropped_frames)))
+            print("avg accuracy score among people:", avg_accuracy_score)
+            return avg_accuracy_score
+        except ZeroDivisionError:
+            print("No person detected")
     # ON AND OFF: this is for suggesting a pose
     for pose in poses:
         mp_drawing = mp.solutions.drawing_utils
@@ -105,6 +137,24 @@ def detect_human(frame, poses=None):
             mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["pose_landmarks"]), mp_holistic.POSE_CONNECTIONS)
     #cv2.imshow("ProPoser", frame)
     return frame
+
+# Helper functions for calculating pose accuracy score
+def calculate_pose_accuracy_score(landmarks1, landmarks2):
+    difference = calculate_landmark_difference(landmarks1, landmarks2)
+    Sum = sum((landmark['x'] + landmark['y'] + landmark['z']) for landmark in difference)
+    avg = Sum / len(difference)
+    accuracy_score = (1 - avg) * 100
+    return accuracy_score
+
+def calculate_landmark_difference(landmarks1, landmarks2):
+    difference = []
+    for landmark1, landmark2 in zip(landmarks1, landmarks2):
+        difference.append({
+            'x': abs(landmark1['x'] - landmark2['x']),
+            'y': abs(landmark1['y'] - landmark2['y']),
+            'z': abs(landmark1['z'] - landmark2['z']),
+        })
+    return difference
 
 # Helper functions for storing and loading poses
 def convert_dict_to_landmarks(landmarks_dict):
@@ -240,10 +290,13 @@ def generate_subboxes(frame):
             #cv2.waitKey(0)
     return cropped_frames
 
-
 if __name__ == "__main__":
     detect_human(2)
+    pose_files = os.listdir('poses')
     for pose_file in pose_files:
         # ON AND OFF: to save poses
-        # save_pose(pose_file)
-        pass
+        save_pose(pose_file)
+        #passfor pose_file in pose_files:
+        # ON AND OFF: to save poses
+        save_pose(pose_file)
+        #pass
