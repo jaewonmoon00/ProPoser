@@ -25,12 +25,13 @@ export default function Home() {
   return (
 
     <main className="flex flex-col items-center justify-center flex-grow space-y-4 px-6 pb-8">
-      <div className="my-container" style={{ position: 'relative', height: '250px'}}>
+      <div className="my-container animate-pulse " style={{ position: 'relative', height: '250px'}}>
       <Image
+        className="pointer-events-none"
         src={backgroundImage}
         alt="Background Image"
         layout="responsive"  // Use "responsive" layout
-        objectFit="cover"
+        
         sizes="(max-width: 15000px) 1100vw, 5000px"  // Adjust the sizes according to your needs
       />
       </div>
@@ -39,7 +40,7 @@ export default function Home() {
         name="party_num"
         value={1}
         onClick={handleClick}
-        className="inline-flex w-full max-w-md h-12 items-center justify-center rounded-md bg-gray-900 dark:bg-white dark:text-slate-900 text-gray-50 text-sm font-medium shadow transition-colors hover:bg-gray-800 dark:hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 disabled:pointer-events-none disabled:opacity-50"
+        className="transition-color duration-300 transform hover:scale-110 transition duration-300 inline-flex w-full max-w-md h-12 items-center justify-center rounded-md bg-gray-900 dark:bg-white dark:text-slate-900 text-gray-50 text-sm font-medium shadow transition-colors hover:bg-gray-800 dark:hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 disabled:pointer-events-none disabled:opacity-50"
       >
         Individual
       </button>
@@ -48,7 +49,7 @@ export default function Home() {
         name="party_num"
         value={2}
         onClick={handleClick}
-        className="inline-flex w-full max-w-md h-12 items-center justify-center rounded-md bg-gray-900 dark:bg-white dark:text-slate-900 text-gray-50 text-sm font-medium shadow transition-colors hover:bg-gray-800 dark:hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 disabled:pointer-events-none disabled:opacity-50"
+        className="transform hover:scale-110 transition duration-300 inline-flex w-full max-w-md h-12 items-center justify-center rounded-md bg-gray-900 dark:bg-white dark:text-slate-900 text-gray-50 text-sm font-medium shadow transition-colors hover:bg-gray-800 dark:hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 disabled:pointer-events-none disabled:opacity-50"
       >
         Party of 2 (Couple)
       </button>
@@ -57,7 +58,7 @@ export default function Home() {
         name="party_num"
         value={3}
         onClick={handleClick}
-        className="inline-flex w-full max-w-md h-12 items-center justify-center rounded-md bg-gray-900 dark:bg-white dark:text-slate-900 text-gray-50 text-sm font-medium shadow transition-colors hover:bg-gray-800 dark:hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 disabled:pointer-events-none disabled:opacity-50"
+        className="transform hover:scale-110 transition duration-300 inline-flex w-full max-w-md h-12 items-center justify-center rounded-md bg-gray-900 dark:bg-white dark:text-slate-900 text-gray-50 text-sm font-medium shadow transition-colors hover:bg-gray-800 dark:hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 disabled:pointer-events-none disabled:opacity-50"
       >
         Party of 3 (Friends)
       </button>
@@ -66,7 +67,7 @@ export default function Home() {
         name="party_num"
         value={4}
         onClick={handleClick}
-        className="inline-flex w-full max-w-md h-12 items-center justify-center rounded-md bg-gray-900 dark:bg-white dark:text-slate-900 text-gray-50 text-sm font-medium shadow transition-colors hover:bg-gray-800 dark:hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 disabled:pointer-events-none disabled:opacity-50"
+        className="transform hover:scale-110 transition duration-300 inline-flex w-full max-w-md h-12 items-center justify-center rounded-md bg-gray-900 dark:bg-white dark:text-slate-900 text-gray-50 text-sm font-medium shadow transition-colors hover:bg-gray-800 dark:hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 disabled:pointer-events-none disabled:opacity-50"
       >
         Party of 4 (Family)
       </button>
@@ -75,7 +76,7 @@ export default function Home() {
         name="party_num"
         value={6}
         onClick={handleClick}
-        className="inline-flex w-full max-w-md h-12 items-center justify-center rounded-md bg-gray-900 dark:bg-white dark:text-slate-900 text-gray-50 text-sm font-medium shadow transition-colors hover:bg-gray-800 dark:hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 disabled:pointer-events-none disabled:opacity-50"
+        className="transform hover:scale-110 transition duration-300 inline-flex w-full max-w-md h-12 items-center justify-center rounded-md bg-gray-900 dark:bg-white dark:text-slate-900 text-gray-50 text-sm font-medium shadow transition-colors hover:bg-gray-800 dark:hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 disabled:pointer-events-none disabled:opacity-50"
       >
         Party of 6 (Club)
       </button>
