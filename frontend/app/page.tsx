@@ -18,9 +18,10 @@ export default function Home() {
       return;
     }
     const newPartySize = e.target.value;
-    setPartySize(newPartySize);
-    // Navigate to /main
-    router.push(`/main?partySize=${partySize}`);
+    setPartySize((prevPartySize) => {
+      router.push(`/main?partySize=${newPartySize}`);
+      return newPartySize;
+    });
   };
 
   return (
