@@ -11,6 +11,11 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "s.gravatar.com",
+        pathname: "/avatar/**",
+      },
     ],
     minimumCacheTTL: 1500000,
   },

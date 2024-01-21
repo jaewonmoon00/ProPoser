@@ -8,5 +8,5 @@ const logoutUrl = [
 ];
 
 export const GET = handleAuth({
-  logout: handleLogout({ returnTo: logoutUrl.join("") }),
+  logout: handleLogout({ returnTo: "http://localhost:3000" }),
 });

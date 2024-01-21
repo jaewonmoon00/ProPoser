@@ -31,17 +31,7 @@ const Navbar = () => {
               Login
             </Link>
           )}
-          {
-            user && <ProfileClient />
-            // (
-            //   <Link
-            //     href="/api/auth/logout"
-            //     className="rounded pt-3 pb-5 px-7 text-s text-primary hover:bg-neutral-100"
-            //   >
-            //     Logout
-            //   </Link>
-            // )
-          }
+          {user && <ProfileClient />}
         </div>
       </div>
     </nav>
