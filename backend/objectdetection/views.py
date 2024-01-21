@@ -29,6 +29,10 @@ def gen(camera, num_people=1):
     try:
         start_time = time.time()
         poses = suggest_pose(num_people)
+        pose_name = None
+        for key in poses:
+            pose_name = key
+        poses = poses[pose_name]
         while True:
             frame = camera.read()
             # Process the frame using detect_human
@@ -53,7 +57,7 @@ def gen(camera, num_people=1):
                 pil_image.save(img_io, format="JPEG")
                 # Create a Django ContentFile from the in-memory file
                 img_content = ContentFile(img_io.getvalue(), "snapshot.jpg")
-                pose = Pose(name="pose_name", accuracy_score=accuracy_score)
+                pose = Pose(name=pose_name, accuracy_score=accuracy_score)
                 # Save the image to the Pose's image field
                 # Generate a unique filename using the current date and time
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

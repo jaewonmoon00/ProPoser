@@ -250,7 +250,7 @@ def suggest_pose(number_of_people):
     pose_file = filtered_pose_files.pop()
     pose_name, _ = pose_file.rsplit('.', 1)
     poses_d = load_pose(f'poses_json/{pose_name}.json')
-    return poses_d[pose_name]
+    return poses_d
     
 def generate_subboxes(frame):
     url = "https://pjreddie.com/media/files/yolov3.weights"

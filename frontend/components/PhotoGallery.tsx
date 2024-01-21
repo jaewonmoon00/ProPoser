@@ -24,15 +24,21 @@ export async function PhotoGallery() {
           {photos.length > 0 &&
             photos.map(
               (photo: Photo, index: number) => (
+                console.log("https://storage.cloud.google.com/conuhacksviii-bucket" + photo.image!),
                 //   <div className="space-y-4" key={index}>
                 <div key={index}>
                   <img
                     alt={`Photo ${index + 1}`}
                     className="aspect-content object-cover"
                     height={150}
-                    src={"https://storage.cloud.google.com/conuhacksviii-bucket" + photo.image!} // assuming the photo object has a src property
+                    src={photo.image!} // assuming the photo object has a src property
                     width={200}
                   />
+                  <div className="gap-2 flex">
+                    <span className="text-center font-bold">{photo.name}</span>
+                    <span className="text-center font-bold">Accuracy Score:</span>
+                    <span className="text-red-600">{photo.accuracy_score}</span>
+                  </div>
                 </div>
               )
               //   </div>
