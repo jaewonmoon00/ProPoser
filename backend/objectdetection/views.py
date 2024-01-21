@@ -11,15 +11,18 @@ from .object_detector import (
 import time
 import os
 from .models import Pose
+
 # to use in-memory file, which is faster because it resides in memory (RAM) rather than on disk
 import io
 from PIL import Image
 from django.core.files.base import ContentFile
+
 # django rest framework
 from rest_framework.decorators import api_view
 from .serializers import PoseSerializer
 from rest_framework.response import Response
 from rest_framework import status
+
 
 # Create your views here.
 def gen(camera, num_people=1):
@@ -87,12 +90,12 @@ def stream_video(request):
     pose_files = os.listdir("poses")
     for pose_file in pose_files:
         # ON AND OFF: to save poses
-        #save_pose(pose_file)
+        # save_pose(pose_file)
         pass
     # Start the webcam video stream
     webcam = WebcamVideoStream(src=0).start()
     try:
-        party_size = request.GET.get('partySize')
+        party_size = request.GET.get("partySize")
         # Stream the video
         return StreamingHttpResponse(
             gen(webcam, party_size),
@@ -101,6 +104,8 @@ def stream_video(request):
     except StopIteration:
         # Stop the webcam video stream when the client disconnects
         webcam.stop()
+
+
 # TODO: we need to send 4 poses recently taken from camera_feed/
 @api_view(["GET", "POST"])
 def get_poses(request):
@@ -109,6 +114,9 @@ def get_poses(request):
         serializer = PoseSerializer(poses, many=True)
         return Response(serializer.data)
     elif request.method == "POST":
-        return Response({"message": "POST method not implemented yet"}, status=status.HTTP_501_NOT_IMPLEMENTED)
+        return Response(
+            {"message": "POST method not implemented yet"},
+            status=status.HTTP_501_NOT_IMPLEMENTED,
+        )
     else:
         return Response({"error": "Invalid method"}, status=status.HTTP_400_BAD_REQUEST)
