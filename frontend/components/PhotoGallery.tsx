@@ -30,7 +30,7 @@ export async function PhotoGallery() {
                     alt={`Photo ${index + 1}`}
                     className="aspect-content object-cover"
                     height={150}
-                    src={photo.image!} // assuming the photo object has a src property
+                    src={"https://storage.cloud.google.com/conuhacksviii-bucket" + photo.image!} // assuming the photo object has a src property
                     width={200}
                   />
                 </div>

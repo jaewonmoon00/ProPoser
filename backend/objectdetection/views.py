@@ -59,6 +59,7 @@ def gen(camera, num_people=1):
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 filename = f"snapshot_{timestamp}.jpg"
                 pose.image.save(filename, img_content)
+                print(filename,"and",img_content)
                 pose.save()
                 # raise an error
                 raise StopIteration
@@ -90,7 +91,7 @@ def stream_video(request):
     pose_files = os.listdir("poses")
     for pose_file in pose_files:
         # ON AND OFF: to save poses
-        # save_pose(pose_file)
+        #save_pose(pose_file)
         pass
     # Start the webcam video stream
     webcam = WebcamVideoStream(src=0).start()
