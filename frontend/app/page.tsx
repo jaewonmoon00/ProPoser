@@ -18,24 +18,23 @@ export default function Home() {
       return;
     }
     const newPartySize = e.target.value;
-    setPartySize(newPartySize);
-    // Navigate to /main
-    router.push(`/main?partySize=${partySize}`);
+    setPartySize((prevPartySize) => {
+      router.push(`/main?partySize=${newPartySize}`);
+      return newPartySize;
+    });
   };
 
   return (
     <main className="flex flex-col items-center justify-center flex-grow space-y-4 px-6 pb-8">
-      <div
-        className="my-container animate-pulse "
-        style={{ position: "relative", height: "250px" }}
-      >
-        <Image
-          className="pointer-events-none"
-          src={backgroundImage}
-          alt="Background Image"
-          layout="responsive" // Use "responsive" layout
-          sizes="(max-width: 15000px) 1100vw, 5000px" // Adjust the sizes according to your needs
-        />
+      <div className="my-container " style={{ position: 'relative', height: '250px'}}>
+      <Image
+        className="pointer-events-none"
+        src={backgroundImage}
+        alt="Background Image"
+        layout="responsive"  // Use "responsive" layout
+        
+        sizes="(max-width: 15000px) 1100vw, 5000px"  // Adjust the sizes according to your needs
+      />
       </div>
       <Button
         type="submit"
