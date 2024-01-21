@@ -19,7 +19,7 @@ from rest_framework.decorators import api_view
 from .serializers import PoseSerializer
 from rest_framework.response import Response
 from rest_framework import status
-key_file = os.path.abspath("conuhacksviii-346820276f09.json")
+
 # Create your views here.
 def gen(camera, num_people=1):
     start_time = time.time()
