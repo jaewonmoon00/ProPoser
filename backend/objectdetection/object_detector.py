@@ -26,7 +26,6 @@ def detect_human(frame, poses=None, calculate_accuracy=False):
     print(weights_file, yolo_config)
     #Load the YOLO model using OpenCV:
     net = cv2.dnn.readNet(weights_file, yolo_config)
-    
     frame = cv2.flip(frame, 1)
     height, width, _ = frame.shape
     blob = cv2.dnn.blobFromImage(frame, 1/255.0, (416, 416), swapRB=True, crop=False)
@@ -89,10 +88,10 @@ def detect_human(frame, poses=None, calculate_accuracy=False):
                 results = holistic.process(image)
                 if results is not None:
                     # Edge case: people with sunglasses on may not be detected
-                    mp_drawing.draw_landmarks(frame, results.face_landmarks, mp_holistic.FACEMESH_CONTOURS)
-                    mp_drawing.draw_landmarks(frame, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
-                    mp_drawing.draw_landmarks(frame, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
-                    mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS)
+                    # mp_drawing.draw_landmarks(frame, results.face_landmarks, mp_holistic.FACEMESH_CONTOURS)
+                    # mp_drawing.draw_landmarks(frame, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
+                    # mp_drawing.draw_landmarks(frame, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
+                    # mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS)
                     if calculate_accuracy:
                         results_dict = convert_results_to_dict(results)
                         # Calculate landmark difference and pose accuracy score for each part
@@ -120,6 +119,17 @@ def detect_human(frame, poses=None, calculate_accuracy=False):
     if calculate_accuracy:
         try:
             avg_accuracy_score = int(round(total_accuracy_score / len(cropped_frames)))
+            # display the score
+            cv2.putText(
+                frame,
+                str(avg_accuracy_score),
+                (center_x, center_y),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                5,  # Increase this value to make the text bigger
+                (0, 215, 255),
+                5,
+                cv2.LINE_AA,
+            )
             print("avg accuracy score among people:", avg_accuracy_score)
             return avg_accuracy_score
         except ZeroDivisionError:
@@ -128,14 +138,19 @@ def detect_human(frame, poses=None, calculate_accuracy=False):
     for pose in poses:
         mp_drawing = mp.solutions.drawing_utils
         mp_holistic = mp.solutions.holistic
+        border_drawing_spec = mp_drawing.DrawingSpec(color=(0, 0, 0), thickness=4, circle_radius=6)  # White border
+        inner_drawing_spec = mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2, circle_radius=4)  # Black inner circle
         if pose["face_landmarks"] is not None:
-            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["face_landmarks"]), mp_holistic.FACEMESH_CONTOURS)
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["face_landmarks"]), mp_holistic.FACEMESH_CONTOURS, inner_drawing_spec, inner_drawing_spec)
         if pose["right_hand_landmarks"] is not None:
-            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["right_hand_landmarks"]), mp_holistic.HAND_CONNECTIONS)
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["right_hand_landmarks"]), mp_holistic.HAND_CONNECTIONS, inner_drawing_spec, border_drawing_spec)
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["right_hand_landmarks"]), mp_holistic.HAND_CONNECTIONS, inner_drawing_spec, border_drawing_spec)
         if pose["left_hand_landmarks"] is not None:
-            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["left_hand_landmarks"]), mp_holistic.HAND_CONNECTIONS)
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["left_hand_landmarks"]), mp_holistic.HAND_CONNECTIONS, inner_drawing_spec, border_drawing_spec)
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["left_hand_landmarks"]), mp_holistic.HAND_CONNECTIONS, inner_drawing_spec, border_drawing_spec)
         if pose["pose_landmarks"] is not None:
-            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["pose_landmarks"]), mp_holistic.POSE_CONNECTIONS)
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["pose_landmarks"]), mp_holistic.POSE_CONNECTIONS, inner_drawing_spec, border_drawing_spec)
+            mp_drawing.draw_landmarks(frame, convert_dict_to_landmarks(pose["pose_landmarks"]), mp_holistic.POSE_CONNECTIONS, inner_drawing_spec, border_drawing_spec)
     #cv2.imshow("ProPoser", frame)
     return frame
 
