@@ -9,7 +9,7 @@ const Page = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       // Replace 'your-next-page-url' with the actual URL you want to navigate to
-      window.location.href = 'results';
+      window.location.href = 'result';
     }, 10000);
 
     // Clear the timeout if the component is unmounted
