@@ -31,4 +31,6 @@ TODO:
 -   Change authentication service provider from auth0 to nextauth
 -   Deploy frontend on vercel, look for different website for deploying it on backend (deploying backend on vercel might not work as well)
 -   When we have enough db, we can train the model to get more precise acccuracy score.
+-   Show sample photo in main page
+-   Send 4 pose names recently taken to result page from main page & navigate to result.
 
