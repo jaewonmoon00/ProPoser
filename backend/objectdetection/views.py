@@ -26,69 +26,65 @@ from rest_framework import status
 
 # Create your views here.
 def gen(camera, num_people=1):
-    try:
-        start_time = time.time()
-        poses = suggest_pose(num_people)
-        pose_name = None
-        for key in poses:
-            pose_name = key
-        poses = poses[pose_name]
-        while True:
-            frame = camera.read()
-            # Process the frame using detect_human
-            processed_frame = detect_human(frame, poses)
-            # Calculate remaining time
-            remaining_time = 10 - (time.time() - start_time)
-            # Convert remaining time to string
-            remaining_time_str = str(int(remaining_time))
-            # Calculate the center position
-            height, width, _ = frame.shape
-            center_x = width // 2
-            center_y = height // 2
-            if time.time() - start_time > 10:
-                accuracy_score = detect_human(frame, poses, calculate_accuracy=True)
-                # Convert the frame from BGR to RGB
-                rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                # Convert the OpenCV image (NumPy array) to a PIL image
-                pil_image = Image.fromarray(rgb_frame)
-                # Create an in-memory file
-                img_io = io.BytesIO()
-                # Save the PIL image to the in-memory file
-                pil_image.save(img_io, format="JPEG")
-                # Create a Django ContentFile from the in-memory file
-                img_content = ContentFile(img_io.getvalue(), "snapshot.jpg")
-                pose = Pose(name=pose_name, accuracy_score=accuracy_score)
-                # Save the image to the Pose's image field
-                # Generate a unique filename using the current date and time
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                filename = f"snapshot_{timestamp}.jpg"
-                pose.image.save(filename, img_content)
-                print(filename,"and",img_content)
-                pose.save()
-                # raise an error
-                raise StopIteration
-                #break
-            
-            # Display remaining time on camera screen
-            cv2.putText(
-                processed_frame,
-                remaining_time_str,
-                (center_x, center_y),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                3,
-                (255, 255, 255),
-                5,
-                cv2.LINE_AA,
+    start_time = time.time()
+    poses = suggest_pose(num_people)
+    pose_name = None
+    for key in poses:
+        pose_name = key
+    poses = poses[pose_name]
+    while True:
+        frame = camera.read()
+        # Process the frame using detect_human
+        processed_frame = detect_human(frame, poses)
+        # Calculate remaining time
+        remaining_time = 10 - (time.time() - start_time)
+        # Convert remaining time to string
+        remaining_time_str = str(int(remaining_time))
+        # Calculate the center position
+        height, width, _ = frame.shape
+        center_x = width // 2
+        center_y = height // 2
+        if time.time() - start_time > 10:
+            accuracy_score = detect_human(frame, poses, calculate_accuracy=True)
+            # Convert the frame from BGR to RGB
+            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # Convert the OpenCV image (NumPy array) to a PIL image
+            pil_image = Image.fromarray(rgb_frame)
+            # Create an in-memory file
+            img_io = io.BytesIO()
+            # Save the PIL image to the in-memory file
+            pil_image.save(img_io, format="JPEG")
+            # Create a Django ContentFile from the in-memory file
+            img_content = ContentFile(img_io.getvalue(), "snapshot.jpg")
+            pose = Pose(name=pose_name, accuracy_score=accuracy_score)
+            # Save the image to the Pose's image field
+            # Generate a unique filename using the current date and time
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"snapshot_{timestamp}.jpg"
+            pose.image.save(filename, img_content)
+            print(filename,"and",img_content)
+            pose.save()
+            break
+        
+        # Display remaining time on camera screen
+        cv2.putText(
+            processed_frame,
+            remaining_time_str,
+            (center_x, center_y),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            3,
+            (255, 255, 255),
+            5,
+            cv2.LINE_AA,
+        )
+        # Convert the processed frame to JPEG
+        ret, jpeg = cv2.imencode(".jpg", processed_frame)
+        if ret:
+            yield (
+                b"--frame\r\n"
+                b"Content-Type: image/jpeg\r\n\r\n" + jpeg.tobytes() + b"\r\n\r\n"
             )
-            # Convert the processed frame to JPEG
-            ret, jpeg = cv2.imencode(".jpg", processed_frame)
-            if ret:
-                yield (
-                    b"--frame\r\n"
-                    b"Content-Type: image/jpeg\r\n\r\n" + jpeg.tobytes() + b"\r\n\r\n"
-                )
-    except StopIteration:
-        camera.stop()
+    camera.stop()
 
 @api_view(["POST", "GET"])
 def stream_video(request):
