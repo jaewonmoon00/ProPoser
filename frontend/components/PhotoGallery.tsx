@@ -5,7 +5,8 @@ import Link from "next/link";
 import { getPhotos } from "@/lib/utils";
 import { Photo } from "@/lib/definition";
 import { DownloadIcon } from "@/components/DownloadIcon";
-
+import {HomeIcon} from "@/components/HomeIcon";
+import {ArrowLeftIcon} from "@/components/ArrowLeftIcon";
 export async function PhotoGallery() {
   const photos = await getPhotos();
   console.log("This is the photos", photos);
@@ -13,6 +14,18 @@ export async function PhotoGallery() {
     <div className="grid grid-cols-7 gap-4 h-screen">
       <div className="flex flex-col items-center justify-start space-y-4 p-2 border-r">
         <Button size="icon" variant="outline">
+          <Link href="/">
+            <HomeIcon className="h-6 w-6" />
+            <span className="sr-only">Home</span>
+          </Link>
+        </Button>
+        <Button size="icon" variant="outline">
+          {/* TODO: let user go back to previous url */}
+          <ArrowLeftIcon className="h-6 w-6" />
+          <span className="sr-only">Go Back</span>
+        </Button>
+        <Button size="icon" variant="outline">
+          {/* TODO: let user download images */}
           <Link href="/">
             <DownloadIcon className="h-6 w-6" />
             <span className="sr-only">Download</span>
