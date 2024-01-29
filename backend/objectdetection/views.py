@@ -23,14 +23,18 @@ from .serializers import PoseSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
-
 # Create your views here.
+
+# Create a shared state
+state = {'pose_name': None}
+
 def gen(camera, num_people=1):
     start_time = time.time()
     poses = suggest_pose(num_people)
     pose_name = None
     for key in poses:
         pose_name = key
+    state['pose_name'] = pose_name
     poses = poses[pose_name]
     while True:
         frame = camera.read()
@@ -65,7 +69,6 @@ def gen(camera, num_people=1):
             print(filename,"and",img_content)
             pose.save()
             break
-        
         # Display remaining time on camera screen
         cv2.putText(
             processed_frame,
@@ -98,10 +101,13 @@ def stream_video(request):
     try:
         party_size = request.GET.get("partySize")
         # Stream the video
-        return StreamingHttpResponse(
+        response = StreamingHttpResponse(
             gen(webcam, party_size),
             content_type="multipart/x-mixed-replace; boundary=frame",
         )
+        response['Access-Control-Expose-Headers'] = 'pose_name'
+        response["pose_name"] = state["pose_name"]
+        return response
     except StopIteration:
         # Stop the webcam video stream when the client disconnects
         webcam.stop()
@@ -111,7 +117,8 @@ def stream_video(request):
 @api_view(["GET", "POST"])
 def get_poses(request):
     if request.method == "GET":
-        poses = Pose.objects.all()
+        pose_name = request.GET.get('poseName', "")
+        poses = Pose.objects.filter(name=pose_name)
         serializer = PoseSerializer(poses, many=True)
         return Response(serializer.data)
     elif request.method == "POST":
