@@ -7,9 +7,10 @@ import { Photo } from "@/lib/definition";
 import { DownloadIcon } from "@/components/DownloadIcon";
 import {HomeIcon} from "@/components/HomeIcon";
 import {ArrowLeftIcon} from "@/components/ArrowLeftIcon";
-export async function PhotoGallery() {
-  const photos = await getPhotos();
-  console.log("This is the photos", photos);
+export async function PhotoGallery({poseName}: {poseName: string}) {
+  // console.log("This is the poseName", poseName);
+  const photos = await getPhotos(poseName);
+  // console.log("This is the photos", photos);
   return (
     <div className="grid grid-cols-7 gap-4 h-screen">
       <div className="flex flex-col items-center justify-start space-y-4 p-2 border-r">
@@ -37,7 +38,6 @@ export async function PhotoGallery() {
           {photos.length > 0 &&
             photos.map(
               (photo: Photo, index: number) => (
-                console.log("https://storage.cloud.google.com/conuhacksviii-bucket" + photo.image!),
                 //   <div className="space-y-4" key={index}>
                 <div key={index}>
                   <img

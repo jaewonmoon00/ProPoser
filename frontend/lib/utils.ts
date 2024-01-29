@@ -7,10 +7,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function getPhotos() {
+export async function getPhotos(poseName: string) {
+  // console.log(poseName);
   noStore();
-  try {
-    const res = await fetch("http://127.0.0.1:8000/result/", {
+  try{
+    const url = `http://127.0.0.1:8000/result/?poseName=${encodeURIComponent(poseName)}`;
+    const res = await fetch(url, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -23,7 +25,6 @@ export async function getPhotos() {
     }
 
     const data: Photo[] = await res.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

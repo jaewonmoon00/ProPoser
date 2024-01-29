@@ -1,7 +1,7 @@
 "use client";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
-import { ProposerLogo } from "./proposer-logo";
+import { ProposerLogo } from "./ProposerLogo";
 import ProfileClient from "./ProfileClient";
 
 const Navbar = () => {
