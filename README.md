@@ -33,4 +33,4 @@ TODO:
 -   When we have enough db, we can train the model to get more precise acccuracy score.
 -   Show sample photo in main page
 -   Send 4 pose names recently taken to result page from main page & navigate to result.
-
+-   Handle the case where it detects more people than it should do by ordering the list of detection frames by its confidence score or by the position of the bounding box)
